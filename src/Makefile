@@ -1,0 +1,22 @@
+BINARY = ../bistromathique
+
+CXX = clang++
+CXXFLAGS = -Wall -Wextra -O4 -march=native
+
+SRC = main.cc converter.cc parser.cc misc.cc lexer.cc
+OBJ = $(SRC:.cc=.o)
+CLEAN = $(OBJ)
+
+all: $(BINARY)
+	$(CXX) $(CXXFLAGS) -o $(BINARY) $(OBJ)
+
+$(BINARY): $(OBJ)
+
+.o:.cc
+	$(CXX) $(CXXFLAGS) -o $@ $<
+
+clean:
+	@rm -frv $(CLEAN)
+
+distclean: clean
+	@rm -frv $(BINARY)
