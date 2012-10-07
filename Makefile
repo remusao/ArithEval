@@ -2,7 +2,7 @@ all:
 	@make -C src/	| grep -v make
 
 clean:
-	@make -C src/ clean | grep -v make
+	@find . -name "*.o" -delete
 
 distclean:
 	@make -C src/ distclean | grep -v make

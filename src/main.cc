@@ -1,7 +1,10 @@
-#include <iostream>
-#include "parser.hh"
-#include "converter.hh"
+#include "Expression.hh"
+#include "Parser.hh"
+#include "Lexer.hh"
 
+
+// For test purpose
+#include <iostream>
 
 // ----------------------------------------------------------------------------
 /// @brief Main function that get base, expr, etc .. and call parser that will
@@ -12,38 +15,35 @@
 int
 main ()
 {
-  char newline;
+    Expression expr;
 
-  unsigned base_size;
-  std::cin >> base_size;
-  std::cin.get(newline);
+    // Read the expression
+    expr.read();
 
-  char* base = new char[base_size + 1];
-  std::cin.read (base, base_size + 1);
-  base[base_size] = '\0';
+    Lexer<Expression> lexer(expr);
+    Parser<Lexer, Expression> parser(lexer, expr);
 
-  unsigned expr_size;
-  std::cin >> expr_size;
-  std::cin.get(newline);
+    unsigned start = 0, end = 1;
+    parser.parse(start, end);
 
-  char* expr = new char[expr_size + 1];
-  std::cin.read (expr, expr_size + 1);
-  expr[expr_size] = '\0';
+    /*
+       char* table = new char[256];
+       build_table (base, base_size, table);
 
-  char* table = new char[256];
-  build_table (base, base_size, table);
+       char* op = new char[256];
+       build_op (op);
 
-  char* op = new char[256];
-  build_op (op);
+       Lexer lex (expr, table, expr_size, op);
 
-  Lexer lex (expr, table, expr_size, op);
+       unsigned offset;
+       offset = parse (lex);
 
-  unsigned offset;
-  offset = parse (lex);
+    // Convert only the result part
+    convert_back (expr, expr_size, base, offset);
 
-  // Convert only the result part
-  convert_back (expr, expr_size, base, offset);
+    std::cout << expr + offset;
+    std::cout.flush ();
+    */
 
-  std::cout << expr + offset;
-  std::cout.flush ();
+    return 0;
 }
