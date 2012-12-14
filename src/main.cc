@@ -1,40 +1,48 @@
 #include <alloca.h>
 #include <unistd.h>
 #include <stdio.h>
+
+#include "utils.hh"
 #include "convert.hh"
 #include "backConvert.hh"
 
 // For test purpose
-// #include <iostream>
 
 // Define the type in which we will store our numbers
 typedef size_t numberType;
 
 int
-main ()
+main()
 {
-	size_t baseSize, exprSize;
-    //char newline;
+	size_t baseSize, exprSize, index, size;
+	char buffer[10];
 
 	// Read base
-    //std::cin >> baseSize;
-    //std::cin.get(newline);
-    scanf("%zi%*[ \r\n\t]", &baseSize);
-
+	size = 4;
+	baseSize = readInt(buffer, size, index);
+	// printf("%zi\n", baseSize);
     char* base = (char*)alloca(baseSize + 1);
-    read(STDIN_FILENO, base, baseSize + 1);
-    //std::cin.read(base, baseSize + 1);
+	for (size_t i = index; i < size; ++i)
+		base[i - index] = buffer[i];
+
+	read(STDIN_FILENO, base + (4 - index), baseSize - (4 - index) + 1);
     base[baseSize] = '\0';
+	// printf("%s\n", base);
+	write(STDOUT_FILENO, base, baseSize);
+	printf("\n");
 
 	// Read expression
-    //std::cin >> exprSize;
-    //std::cin.get(newline);
-    scanf("%zi%*[ \r\n\t]", &exprSize);
+	size = 10;
+	exprSize = readInt(buffer, size, index);
+	// printf("%zi\n", exprSize);
+    char* expression = (char*)alloca(exprSize + 1);
+	for (size_t i = index; i < size; ++i)
+		expression[i - index] = buffer[i];
 
-    char* expression = (char *)alloca(exprSize + 1);
-    read(STDIN_FILENO, expression, exprSize + 1);
-    //std::cin.read(expression, exprSize + 1);
+    read(STDIN_FILENO, expression + (10 - index), exprSize - (4 - index) + 1);
     expression[exprSize] = '\0';
+	write(STDOUT_FILENO, expression, exprSize);
+	printf("\n");
 
     // Convert bases
     //numberType newBaseConverter[256] = {0};
@@ -43,14 +51,6 @@ main ()
 
     // Lexing / Parsing / Evaluate
     // TODO
-    printf("%s\n%s\n", base, expression);
-/*    for (std::streamsize i = 0; i < baseSize; ++i)
-    	std::cout << base[i];
-	std::cout << std::endl;
 
-    for (std::streamsize i = 0; i < exprSize; ++i)
-    	std::cout << expression[i];
-	std::cout << std::endl;
-*/
     return 0;
 }

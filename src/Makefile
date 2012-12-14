@@ -1,9 +1,9 @@
 BINARY = ../bistromathique
 
-CXX = g++
-CXXFLAGS = -std=c++11 -Werror -Wall -Wextra -g #-Weverything -g
+CXX = clang++
+CXXFLAGS = -std=c++11 -Weverything -O3 -march=native
 
-SRC = main.cc
+SRC = main.cc utils.cc
 OBJ = $(SRC:.cc=.o)
 CLEAN = $(OBJ)
 
