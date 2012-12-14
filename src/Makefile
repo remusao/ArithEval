@@ -1,7 +1,7 @@
 BINARY = ../bistromathique
 
-CXX = clang++
-CXXFLAGS = -std=c++11 -Werror -Wall -Wextra -g -march=native
+CXX = g++
+CXXFLAGS = -std=c++11 -Werror -Wall -Wextra -g #-Weverything -g
 
 SRC = main.cc
 OBJ = $(SRC:.cc=.o)
