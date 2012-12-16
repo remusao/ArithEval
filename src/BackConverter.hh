@@ -1,6 +1,6 @@
 #pragma once
-#ifndef BACK_CONVERT_HH_
-# define BACK_CONVERT_HH_
+#ifndef BACK_CONVERTER_HH_
+# define BACK_CONVERTER_HH_
 
 
 /*
@@ -34,4 +34,4 @@ void convertBack(unsigned long int number, char res[], size_t index)
 
 }
 */
-#endif // BACK_CONVERT_HH_
+#endif // BACK_CONVERTER_HH_

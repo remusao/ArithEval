@@ -1,6 +1,6 @@
 #pragma once
-#ifndef CONVERT_HH_
-# define CONVERT_HH_
+#ifndef CONVERTER_HH_
+# define CONVERTER_HH_
 
 
 template <typename T>
@@ -14,8 +14,15 @@ inline void baseConverter(const char base[], size_t baseSize, T newBase[256], T 
 }
 
 
+template <typename T>
+inline void convert(const char* expr, T* compressed, Token& token)
+{
+	// convert and add the number \p token to the compressed size T array
+}
+
+
 /////////////////////////////////////////////////////////////////////////////////
-// Convert char[] into another representation (size_t, unsigned long, etc.)  ////
+// Convert char[] into another representation T (size_t, unsigned long, etc.)  ////
 /////////////////////////////////////////////////////////////////////////////////
 
 template <typename T, unsigned base_size>
@@ -109,4 +116,7 @@ inline T convert8(const char expr[], size_t index, T baseConverter[256])
     | (baseConverter[(size_t)expr[index + 7]]);
 }
 
-#endif // CONVERT_HH_
+
+// TODO ... continue
+
+#endif // CONVERTER_HH_

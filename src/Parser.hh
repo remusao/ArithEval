@@ -1,74 +1,9 @@
 #ifndef PARSER_HH
 # define PARSER_HH
 
-# include "Token.hh"
-# define MAX_SIZE 1000
+# include <cstddef>
 
-template <template <typename> class Lexer, typename Expression>
-class Parser
-{
-public:
-    Parser(const Lexer<Expression>& lexer, Expression& exp);
-    ~Parser();
-
-    void parse(unsigned& start, unsigned& end);
-
-private:
-    typedef struct
-    {
-        unsigned char token;
-        unsigned begin;
-        unsigned end;
-    } s_element;
-
-    /* data */
-    const Lexer<Expression>&    lexer_;
-    Expression&                 expr_;
-
-    // Stacks for shunting yard
-    s_element op_[MAX_SIZE];
-    s_element output_[MAX_SIZE];
-    unsigned offset_, opLen_, outputLen_;
-    unsigned char token_;
-
-    static const unsigned char operators_[255];
-};
-
-template <template <typename> class Lexer, typename Expression>
-const unsigned char Parser<Lexer, Expression>::operators_[255] =
-{
-    END, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER,
-    NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER,
-    NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER,
-    NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER,
-    NUMBER, MOD, NUMBER, NUMBER, LPAR, RPAR, MULT, PLUS, NUMBER, MINUS,
-    NUMBER, DIV, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER,
-    NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER,
-    NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER,
-    NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER,
-    NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER,
-    NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER,
-    NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER,
-    NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER,
-    NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER,
-    NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER,
-    NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER,
-    NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER,
-    NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER,
-    NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER,
-    NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER,
-    NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER,
-    NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER,
-    NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER,
-    NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER,
-    NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER,
-    NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER,
-    NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER,
-    NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER, NUMBER,
-    NUMBER, NUMBER
-};
-
-# include "Parser.hxx"
+int parse(const char* base, size_t baseSize, const char* expr, size_t exprSize);
 
 #endif /* !PARSER_HH */
 

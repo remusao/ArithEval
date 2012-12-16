@@ -1,9 +1,9 @@
 BINARY = ../bistromathique
 
 CXX = clang++
-CXXFLAGS = -std=c++11 -Weverything -O3 -march=native
+CXXFLAGS = -std=c++11 -Weverything -pedantic
 
-SRC = main.cc utils.cc
+SRC = main.cc utils.cc Lexer.cc Parser.cc
 OBJ = $(SRC:.cc=.o)
 CLEAN = $(OBJ)
 
