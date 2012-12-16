@@ -51,13 +51,28 @@ parse(const char* base, size_t baseSize, const char* expr, size_t exprSize)
 		}
 		else // Operator
 		{
-			while (token.type_ < op[opIndex - 1])
+			if (token.type_ == LPAR)
+				op[opIndex++] = LPAR;
+			else if (token.type_ == RPAR)
 			{
-				--opIndex;
-				outIndex -= 2;
-				// Do operation
+				while (op[opIndex - 1] != LPAR)
+				{
+					--opIndex;
+					outIndex -= 2;
+					// Do operation
+				}
+				--opIndex; // Delete the LPAR token
 			}
-			op[opIndex++] = token.type_;
+			else
+			{
+				while (token.type_ < op[opIndex - 1])
+				{
+					--opIndex;
+					outIndex -= 2;
+					// Do operation
+				}
+				op[opIndex++] = token.type_;
+			}
 		}
 	} while (token.type_ != END);
 
