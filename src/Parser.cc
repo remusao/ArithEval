@@ -10,7 +10,7 @@
 // Debug
 #include <iostream>
 
-#define MAX_SIZE 1000
+#define MAX_SIZE 10000
 // Define the type in which we will store our numbers
 typedef size_t numberType;
 
@@ -26,8 +26,8 @@ parse(const char* base, size_t baseSize, const char* expr, size_t exprSize)
     numberType* compressedExpression = (numberType*)alloca(newSize);
 
     // Convert bases
-    numberType newBaseConverter[256] = {0};
-    numberType oldBaseConverter[256] = {0};
+    numberType newBaseConverter[255] = {0};
+    numberType oldBaseConverter[255] = {0};
     baseConverter(base, baseSize, newBaseConverter, oldBaseConverter);
 
 	/////////////////////////////
@@ -46,7 +46,7 @@ parse(const char* base, size_t baseSize, const char* expr, size_t exprSize)
 		token = next(expr, exprSize, token.offset_ + token.len_);
 		if (token.type_ == NUMBER)
 		{
-			convert(expr, compressedExpression, token);
+			//convert(expr, compressedExpression, token);
 			output[outIndex++] = token;
 		}
 		else // Operator
@@ -58,7 +58,7 @@ parse(const char* base, size_t baseSize, const char* expr, size_t exprSize)
 				while (op[opIndex - 1] != LPAR)
 				{
 					--opIndex;
-					outIndex -= 2;
+					--outIndex;
 					// Do operation
 				}
 				--opIndex; // Delete the LPAR token
@@ -68,7 +68,7 @@ parse(const char* base, size_t baseSize, const char* expr, size_t exprSize)
 				while (token.type_ < op[opIndex - 1])
 				{
 					--opIndex;
-					outIndex -= 2;
+					outIndex;
 					// Do operation
 				}
 				op[opIndex++] = token.type_;
@@ -82,10 +82,11 @@ parse(const char* base, size_t baseSize, const char* expr, size_t exprSize)
 	while (opIndex > 1)
 	{
 		--opIndex;
-		outIndex -= 2;
+		outIndex;
 		// Comput operation
 	}
 
+	// Output the result
 	if (outIndex != 1)
 		return 1;
 	else

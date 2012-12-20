@@ -1,5 +1,6 @@
 #include <alloca.h>
 #include <unistd.h>
+#include <cstdlib>
 
 #include "utils.hh"
 #include "Parser.hh"
@@ -16,7 +17,7 @@ int main()
 	// > Base size
 	size = 4; // baseSize is at most 4 octets (including the trailing \n
 	baseSize = readInt(buffer, size, index);
-    char* base = (char*)alloca(baseSize + 1);
+    char* base = (char*)malloc(baseSize + 1);
 	for (size_t i = index; i < size; ++i)
 		base[i - index] = buffer[i];
 
@@ -31,7 +32,7 @@ int main()
 	// > Expression size
 	size = 10;
 	exprSize = readInt(buffer, size, index);
-    char* expression = (char*)alloca(exprSize + 1);
+    char* expression = (char*)malloc(exprSize + 1);
 	for (size_t i = index; i < size; ++i)
 		expression[i - index] = buffer[i];
 
@@ -40,5 +41,9 @@ int main()
     expression[exprSize] = '\0';
 
 	// Eval
-	return parse(base, baseSize, expression, exprSize);
+	int return_code = parse(base, baseSize, expression, exprSize);
+	free(base);
+	free(expression);
+
+	return return_code;
 }

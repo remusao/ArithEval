@@ -1,10 +1,11 @@
 #pragma once
-#ifndef CONVERTER_HH_
-# define CONVERTER_HH_
+#ifndef CONVERT_HH_
+# define CONVERT_HH_
 
+# include "repeatMacro.hh"
 
 template <typename T>
-inline void baseConverter(const char base[], size_t baseSize, T newBase[256], T oldBase[256])
+inline void baseConverter(const char base[], size_t baseSize, T newBase[255], T oldBase[255])
 {
     for (T i = 0; i < baseSize; ++i)
     {
@@ -13,110 +14,29 @@ inline void baseConverter(const char base[], size_t baseSize, T newBase[256], T 
     }
 }
 
-
-template <typename T>
-inline void convert(const char* expr, T* compressed, Token& token)
-{
-	// convert and add the number \p token to the compressed size T array
-}
-
-
 /////////////////////////////////////////////////////////////////////////////////
-// Convert char[] into another representation T (size_t, unsigned long, etc.)  ////
+// Convert char[] into another representation (size_t, unsigned long, etc.)  ////
 /////////////////////////////////////////////////////////////////////////////////
 
-template <typename T, unsigned base_size>
-inline T convert1(const char expr[], size_t index, T baseConverter[256])
-{
-    //static_assert(1 <= (sizeof (T) * 8) / base_size, "Error");
-    return baseConverter[(size_t)expr[index]];
+#define COMPRESS(n, max)                                                    \
+| (baseConverter[(size_t)expr[index + (max - n)]] << (n - 1) * base_size)
+
+
+#define CONVERT(n)                                                          \
+template <typename T, unsigned base_size>                                   \
+inline T convert##n(const char expr[], size_t index, T baseConverter[255])  \
+{                                                                           \
+    static_assert(1 <= (sizeof (T) * 8) / base_size, "Error");          \
+    return 0 REPEAT(n, COMPRESS, n) ;                                       \
 }
 
-template <typename T, unsigned base_size>
-inline T convert2(const char expr[], size_t index, T baseConverter[256])
-{
-    //static_assert(2 <= (sizeof (T) * 8) / base_size, "Error");
-    return
-      (baseConverter[(size_t)expr[index]] << base_size)
-    |  baseConverter[(size_t)expr[index + 1]];
-}
+CONVERT(1)  CONVERT(2)  CONVERT(3)  CONVERT(4)  CONVERT(5)  CONVERT(6)  CONVERT(7)  CONVERT(8)
+CONVERT(9)  CONVERT(10) CONVERT(11) CONVERT(12) CONVERT(13) CONVERT(14) CONVERT(15) CONVERT(16)
+CONVERT(17) CONVERT(18) CONVERT(19) CONVERT(20) CONVERT(21) CONVERT(22) CONVERT(23) CONVERT(24)
+CONVERT(25) CONVERT(26) CONVERT(27) CONVERT(28) CONVERT(29) CONVERT(30) CONVERT(31) CONVERT(32)
+CONVERT(33) CONVERT(34) CONVERT(35) CONVERT(36) CONVERT(37) CONVERT(38) CONVERT(39) CONVERT(40)
+CONVERT(41) CONVERT(42) CONVERT(43) CONVERT(44) CONVERT(45) CONVERT(46) CONVERT(47) CONVERT(48)
+CONVERT(49) CONVERT(50) CONVERT(51) CONVERT(52) CONVERT(53) CONVERT(54) CONVERT(55) CONVERT(56)
+CONVERT(57) CONVERT(58) CONVERT(59) CONVERT(60) CONVERT(61) CONVERT(62) CONVERT(63) CONVERT(64)
 
-template <typename T, unsigned base_size>
-inline T convert3(const char expr[], size_t index, T baseConverter[256])
-{
-    //static_assert(3 <= (sizeof (T) * 8) / base_size, "Error");
-    return
-      (baseConverter[(size_t)expr[index]] << 2 * base_size)
-    | (baseConverter[(size_t)expr[index + 1]] << base_size)
-    | (baseConverter[(size_t)expr[index + 2]]);
-}
-
-template <typename T, unsigned base_size>
-inline T convert4(const char expr[], size_t index, T baseConverter[256])
-{
-    //static_assert(4 <= (sizeof (T) * 8) / base_size, "Error");
-    return
-      (baseConverter[(size_t)expr[index]] << 3 * base_size)
-    | (baseConverter[(size_t)expr[index + 1]] << 2 * base_size)
-    | (baseConverter[(size_t)expr[index + 2]] << base_size)
-    | (baseConverter[(size_t)expr[index + 3]]);
-}
-
-template <typename T, unsigned base_size>
-inline T convert5(const char expr[], size_t index, T baseConverter[256])
-{
-    //static_assert(5 <= (sizeof (T) * 8) / base_size, "Error");
-    return
-      (baseConverter[(size_t)expr[index]] << 4 * base_size)
-    | (baseConverter[(size_t)expr[index + 1]] << 3 * base_size)
-    | (baseConverter[(size_t)expr[index + 2]] << 2 * base_size)
-    | (baseConverter[(size_t)expr[index + 3]] << base_size)
-    | (baseConverter[(size_t)expr[index + 4]]);
-}
-
-template <typename T, unsigned base_size>
-inline T convert6(const char expr[], size_t index, T baseConverter[256])
-{
-    //static_assert(6 <= (sizeof (T) * 8) / base_size, "Error");
-    return
-      (baseConverter[(size_t)expr[index]] << 5 * base_size)
-    | (baseConverter[(size_t)expr[index + 1]] << 4 * base_size)
-    | (baseConverter[(size_t)expr[index + 2]] << 3 * base_size)
-    | (baseConverter[(size_t)expr[index + 3]] << 2 * base_size)
-    | (baseConverter[(size_t)expr[index + 4]] << base_size)
-    | (baseConverter[(size_t)expr[index + 5]]);
-}
-
-template <typename T, unsigned base_size>
-inline T convert7(const char expr[], size_t index, T baseConverter[256])
-{
-    //static_assert(7 <= (sizeof (T) * 8) / base_size, "Error");
-    return
-      (baseConverter[(size_t)expr[index]] << 6 * base_size)
-    | (baseConverter[(size_t)expr[index + 1]] << 5 * base_size)
-    | (baseConverter[(size_t)expr[index + 2]] << 4 * base_size)
-    | (baseConverter[(size_t)expr[index + 3]] << 3 * base_size)
-    | (baseConverter[(size_t)expr[index + 4]] << 2 * base_size)
-    | (baseConverter[(size_t)expr[index + 5]] << base_size)
-    | (baseConverter[(size_t)expr[index + 6]]);
-}
-
-template <typename T, unsigned base_size>
-inline T convert8(const char expr[], size_t index, T baseConverter[256])
-{
-    //static_assert(8 <= (sizeof (T) * 8) / base_size, "Error");
-    return
-      (baseConverter[(size_t)expr[index]] << 7 * base_size)
-    | (baseConverter[(size_t)expr[index + 1]] << 6 * base_size)
-    | (baseConverter[(size_t)expr[index + 2]] << 5 * base_size)
-    | (baseConverter[(size_t)expr[index + 3]] << 4 * base_size)
-    | (baseConverter[(size_t)expr[index + 4]] << 3 * base_size)
-    | (baseConverter[(size_t)expr[index + 5]] << 2 * base_size)
-    | (baseConverter[(size_t)expr[index + 6]] << base_size)
-    | (baseConverter[(size_t)expr[index + 7]]);
-}
-
-
-// TODO ... continue
-
-#endif // CONVERTER_HH_
+#endif // CONVERT_HH_

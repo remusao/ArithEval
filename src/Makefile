@@ -1,7 +1,7 @@
 BINARY = ../bistromathique
 
 CXX = clang++
-CXXFLAGS = -std=c++11 -Weverything -pedantic
+CXXFLAGS = -std=c++11 -Weverything -pedantic -g -O0
 
 SRC = main.cc utils.cc Lexer.cc Parser.cc
 OBJ = $(SRC:.cc=.o)
