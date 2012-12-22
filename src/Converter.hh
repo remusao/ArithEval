@@ -79,13 +79,12 @@ Token convert(const char expr[], const Token& token, T output[], unsigned offset
 		output[offset] = converters[number](expr, tok_offset++, baseConverter); // call CONVERT(number)
 	}
 
-// TODO
-/*	if (len > 0)
+	if (len > 0)
 	{
 		++res.len_;
 		output[offset] = converters[len](expr, tok_offset, baseConverter); // call CONVERT(len)
 	}
-*/
+
 	return res;
 }
 

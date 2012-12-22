@@ -32,7 +32,7 @@ parse(const char* base, size_t baseSize, const char* expr, size_t exprSize)
     // Allocate a tab of numberType to store the compressed numbers
     int log2BaseSize = (int)(log2((int)baseSize)) + 1;
 	unsigned number = (sizeof (numberType) * 8) / log2BaseSize;
-    size_t newSize = (exprSize / number); // * log2BaseSize) / sizeof (numberType);
+    size_t newSize = ((exprSize * 8) / number); // * log2BaseSize) / sizeof (numberType);
     numberType* compressedExpression = (numberType*)malloc(newSize);
 
     // Convert bases
@@ -46,6 +46,11 @@ parse(const char* base, size_t baseSize, const char* expr, size_t exprSize)
 	std::cout << "sizeof (T)     = " << sizeof (numberType) << std::endl;
 	std::cout << "baseSize       = " << baseSize << std::endl;
 	std::cout << "log2(baseSize) = " << log2BaseSize << std::endl;
+	std::cout << "exprSize       = " << exprSize << std::endl;
+	std::cout << "newSize        = " << newSize << std::endl;
+	std::cout << "\n*--------------" << std::endl;
+	std::cout << "> Evaluation  |" << std::endl;
+	std::cout << "*--------------\n" << std::endl;
 #endif
 
 	switch (log2BaseSize)
@@ -66,9 +71,8 @@ parse(const char* base, size_t baseSize, const char* expr, size_t exprSize)
 	do
 	{
 
-#ifdef _DEBUG
-		// Check for errors
-		if (outIndex >= 2 * MAX_SIZE || opIndex >= MAX_SIZE || compressedOffset >= newSize)
+#ifdef _DEBUG // Check bounds
+		if (outIndex >= 2 * MAX_SIZE || opIndex >= MAX_SIZE)
 		{
 			std::cout << "Bim" << std::endl;
 			break;
@@ -80,13 +84,12 @@ parse(const char* base, size_t baseSize, const char* expr, size_t exprSize)
 
 #ifdef _DEBUG
 
-		int tmpIndex;
 		switch (token.type_)
 		{
 			case END: std::cout << "End\t\t"; break;
 			case NUMBER:
 				std::cout << "Number(";
-				for (int i = 0; i < token.len_; ++i)
+				for (unsigned i = 0; i < token.len_; ++i)
 					std::cout << expr[token.offset_ + i];
 				std::cout << ")\t";
 				break;
@@ -110,7 +113,7 @@ parse(const char* base, size_t baseSize, const char* expr, size_t exprSize)
 #ifdef _DEBUG
 			Token tmpToken = output[outIndex - 1];
 			std::cout << "> ";
-			for (int i = 0; i < tmpToken.len_; ++i)
+			for (unsigned i = 0; i < tmpToken.len_; ++i)
 				std::cout << std::hex << compressedExpression[tmpToken.offset_ + i] << " ";
 			std::cout << "\t\t - offset : " << tmpToken.offset_ << " - len : " << tmpToken.len_ << std::endl;
 #endif
