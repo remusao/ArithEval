@@ -59,18 +59,19 @@ Token convert(const char expr[], const Token& token, T output[], unsigned offset
 {
 	// Function ptr on convert##n
 	typedef T (*fun)(const char[], size_t, T[]);
-	// Used to access the right convert function in constant time
+	// Used to access the right convert function
 	static const fun converters[] =
 	{
-		nullptr,
+		nullptr, // there is no function : convert0
 		REPEAT(64, TAB_ENTRY, 0)
 	};
+	static const unsigned number = (sizeof (T) * 8) / base_size;
 
-	unsigned number = (sizeof (T) * 8) / base_size;
+
 	unsigned len = token.len_;
 	unsigned tok_offset = token.offset_;
 
-	// Maj token
+	// Resulting token
 	Token res(NUMBER, offset, token.len_ / number);
 
 	for (; len >= number; len -= number, ++offset)
@@ -78,9 +79,13 @@ Token convert(const char expr[], const Token& token, T output[], unsigned offset
 		output[offset] = converters[number](expr, tok_offset++, baseConverter); // call CONVERT(number)
 	}
 
-	if (len > 0)
-		++res.len_, output[offset] = converters[len](expr, tok_offset, baseConverter);
-
+// TODO
+/*	if (len > 0)
+	{
+		++res.len_;
+		output[offset] = converters[len](expr, tok_offset, baseConverter); // call CONVERT(len)
+	}
+*/
 	return res;
 }
 
